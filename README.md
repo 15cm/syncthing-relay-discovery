@@ -23,12 +23,6 @@ If you already have certificates generated and want to use them and protect the 
 
 `docker run --name syncthing-relay -d -p 22067:22067 -v /your/home:/home/syncthing/certs:ro --restart=always t4skforce/syncthing-relay-discovery:latest`
 
-Creating cert directory and setting permissions (docker process is required to have access):
-```bash
-mkdir -p /your/home/certs
-chown -R 1000:1000 /your/home/certs
-```
-
 # Container Configuration
 
 There are several configuarion options available. The options are configurable via environment variables (docker default):

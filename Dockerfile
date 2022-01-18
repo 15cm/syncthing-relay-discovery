@@ -28,10 +28,6 @@ ENV DISCO_OPTS      ""
 ########################################
 #               Setup                  #
 ########################################
-ENV USERNAME syncthing
-ENV USERGROUP syncthing
-ENV APPUID 1000
-ENV APPGID 1000
 ENV USER_HOME /home/syncthing
 ENV BUILD_REQUIREMENTS curl
 ENV REQUIREMENTS ca-certificates openssl supervisor
@@ -74,15 +70,10 @@ RUN curl -Ls ${RELAY_DOWNLOADURL} --output relaysrv.tar.gz \
 COPY supervisord.conf ${USER_HOME}/supervisord.conf
 COPY start_relay.sh ${USER_HOME}/server/start_relay.sh
 COPY start_discovery.sh ${USER_HOME}/server/start_discovery.sh
-RUN chmod +x ${USER_HOME}/server/start_relay.sh ${USER_HOME}/server/start_discovery.sh \
-		&& groupadd --system --gid ${APPGID} ${USERGROUP} \
-		&& useradd --system --uid ${APPUID} -g ${USERGROUP} ${USERNAME} --home ${USER_HOME} \
-		&& echo "${USERNAME}:$(openssl rand 512 | openssl sha256 | awk '{print $2}')" | chpasswd \
-		&& chown -R ${USERNAME}:${USERGROUP} ${USER_HOME}
+RUN chmod +x ${USER_HOME}/server/start_relay.sh ${USER_HOME}/server/start_discovery.sh
 
 EXPOSE ${STATUS_PORT} ${RELAY_PORT} ${DISCO_PORT}
 VOLUME ${USER_HOME}/certs
 
-USER $USERNAME
 WORKDIR ${USER_HOME}/server/
 CMD /usr/bin/supervisord -c "${USER_HOME}/supervisord.conf"
