@@ -1,0 +1,23 @@
+---
+kind: pipeline
+type: docker
+name: docker-build
+
+steps:
+  - name: docker
+    image: plugins/kaniko:linux-amd64
+    settings:
+      repo: 15cm/syncthing-relay-discovery
+      auto_tag: true
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+
+trigger:
+  branch:
+    - master
+  event:
+    - push
+    - custom
+    - tag
