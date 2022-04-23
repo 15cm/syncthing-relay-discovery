@@ -5,7 +5,7 @@ name: docker-build
 
 steps:
   - name: docker
-    image: 15cm/drone-kaniko
+    image: plugins/kaniko:1.5.1-linux-amd64-kaniko1.8.1
     settings:
       repo: 15cm/syncthing-relay-discovery
       auto_tag: true
